@@ -16,9 +16,8 @@
 from typing import Generic, TypeVar
 from collections.abc import Callable
 
-from Strategy import Strategy
-from StrategyEvaluation import StrategyEvaluation
-from Strategies import AdditionStrategy
+from .Strategy import Strategy
+from .StrategyEvaluation import StrategyEvaluation
 
 # ---
 

@@ -1,6 +1,6 @@
 import pytest
 
-from Strategies import MultiplicationStrategy
+from app.strategies.Strategies import MultiplicationStrategy
 from StrategyContext import StrategyContext, SurveyContextStrategy
 
 

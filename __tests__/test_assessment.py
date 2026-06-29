@@ -1,7 +1,7 @@
 from pytest import mark
 
-from Assessment import AssessmentFactory, Assessment
-from Strategies import Strategy, AdditionStrategy
+from app.assessment.Assessment import AssessmentFactory, Assessment
+from app.strategies.Strategies import Strategy, AdditionStrategy
 from StrategyContext import SurveyContextStrategy
 
 

@@ -18,7 +18,7 @@ from typing import TypeVar, Generic
 from collections.abc import Iterable
 from functools import reduce
 
-from Strategy import Strategy
+from .Strategy import Strategy
 
 # ---
 

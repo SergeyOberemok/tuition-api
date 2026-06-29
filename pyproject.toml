@@ -1,0 +1,11 @@
+[project]
+name = "tuition-api"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "flask>=3.1.0",
+    "Flask_SocketIO>=5.4.1",
+    "eventlet>=0.38.0",
+    "python-dotenv>=1.2.2",
+    "flask-pymongo>=3.0.1",
+]

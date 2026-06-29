@@ -1,6 +1,6 @@
 from pytest import mark
 
-from Strategies import MultiplicationStrategy
+from app.strategies.Strategies import MultiplicationStrategy
 
 
 @mark.parametrize(["num1", "num2", "answer"], [(0, 0, 0), (2, 3, 6)])

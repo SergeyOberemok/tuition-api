@@ -17,8 +17,8 @@
 from collections.abc import Callable, Iterable
 from typing import TypeVar, Generic
 
-from Strategies import Strategy, AdditionStrategy, CalculationStrategyFactory
-from Evaluation import Evaluation
+from .Strategies import Strategy, AdditionStrategy, CalculationStrategyFactory
+from .Evaluation import Evaluation
 # -
 
 # ---

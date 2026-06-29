@@ -14,9 +14,9 @@
 # ---
 
 from abc import ABC, abstractmethod
-from collections.abc import Iterable, Callable
+from collections.abc import Iterable
 
-from StrategyEvaluation import StrategyEvaluation
+from app.strategies.StrategyEvaluation import StrategyEvaluation
 
 
 # ---

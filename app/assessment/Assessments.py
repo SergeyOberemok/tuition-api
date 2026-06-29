@@ -17,11 +17,9 @@
 from collections.abc import Iterable, Callable
 # -
 
-from Assessment import AssessmentCollection
-from Strategy import Strategy
-from Strategies import AdditionStrategy
-from StrategyEvaluation import StrategyEvaluation
-from StrategyEvaluations import StrategyEvaluationFactory
+from .Assessment import AssessmentCollection
+from app.strategies.Strategy import Strategy
+from app.strategies.StrategyEvaluations import StrategyEvaluationFactory
 
 
 # ### Survey assessment
