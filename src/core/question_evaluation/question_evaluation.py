@@ -15,6 +15,10 @@ class IQuestionEvaluation(IAssessmentItem):
         pass
 
     @abstractmethod
+    def goal(self):
+        pass
+
+    @abstractmethod
     def to_dict(self) -> dict:
         pass
 
@@ -36,6 +40,9 @@ class QuestionEvaluation(IQuestionEvaluation):
         self._is_correct = self._strategy().compare(self._answer)
 
         return self._is_correct
+
+    def goal(self):
+        return self._strategy().do_algorithm()
 
     def _strategy(self):
         return StrategyFactory.create(type('Test', (IQuestionAdapter,), self.to_dict())())

@@ -1,14 +1,12 @@
-from collections.abc import Iterator
 from dataclasses import dataclass
 
-from src.core.assessment.assessment import IAssessmentItem, IAssessment
+from src.core.assessment.assessment import IAssessment
 from src.core.question_evaluation.question_evaluation import IQuestionEvaluation
 
 
 @dataclass
 class AssessmentSession:
     assessment: IAssessment | None = None
-    assessment_iterator: Iterator[IAssessmentItem] | None = None
     assessment_item: IQuestionEvaluation | None = None
 
 
