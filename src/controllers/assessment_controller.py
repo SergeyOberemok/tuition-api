@@ -5,7 +5,7 @@ from src.controllers.assessment_session_store import AssessmentSessionStore
 from src.core.assessment.assessment_factory import AssessmentFactory
 from src.core.utils.number_utils import generate_random_numbers_pairs
 
-socketio = SocketIO(cors_allowed_origins='*', logger=True)
+socketio = SocketIO(cors_allowed_origins='*', logger=True, async_mode='gevent')
 sessions = AssessmentSessionStore()
 
 
@@ -34,7 +34,7 @@ def handle_question(args=None):
 
     session.assessment_item = item
 
-    return item.to_dict()
+    return {'question': str(item), 'type': item.type}
 
 
 @socketio.on('answer')
@@ -51,14 +51,14 @@ def handle_answer(answer: str):
 
 
 @socketio.on('goal')
-def handle_goal():
+def handle_goal(args=None):
     session = sessions.get(request.sid)
 
     if session.assessment_item is None:
         emit('error', {'message': 'No active question to answer'})
         return ''
 
-    return session.assessment_item.goal()
+    return session.assessment_item.goal
 
 
 @socketio.on('disconnect')

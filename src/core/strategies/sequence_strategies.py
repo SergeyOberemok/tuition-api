@@ -4,6 +4,7 @@
 # %%
 from abc import abstractmethod
 from collections.abc import Sequence, Callable
+from enum import Enum
 
 from src.core.strategies.strategy import IStrategy
 
@@ -21,6 +22,10 @@ class ISequenceStrategy(IStrategy[Sequence]):
 
     def __str__(self) -> str:
         return ' -> '.join(map(str, self._sequence))
+
+# %%
+class SequenceType(str, Enum):
+    ORDERED = 'ordered'
 
 # %%
 class OrderedStrategy(ISequenceStrategy):

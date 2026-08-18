@@ -38,7 +38,7 @@ class ICalculationStrategy(IStrategy[Number]):
         pass
 
     def __str__(self) -> str:
-        return self.operation.join(map(str, self._numbers))
+        return f' {self.operation} '.join(map(str, self._numbers))
 
 # %% [markdown]
 # ##### Addition
@@ -53,7 +53,7 @@ class AdditionStrategy(ICalculationStrategy):
 
     @property
     def operation(self) -> str:
-        return ' + '
+        return '+'
 
 # %% [markdown]
 # ##### Subtraction
@@ -62,7 +62,7 @@ class AdditionStrategy(ICalculationStrategy):
 class SubtractionStrategy(ICalculationStrategy):
     def __init__(self, numbers: Sequence[Number]):
         super().__init__(numbers)
-        self._operation = ' - '
+        self._operation = '-'
 
     def do_algorithm(self) -> Number:
         return reduce(lambda acc, number: acc - number, self._numbers)
@@ -78,14 +78,14 @@ class SubtractionStrategy(ICalculationStrategy):
 class MultiplicationStrategy(ICalculationStrategy):
     def __init__(self, numbers: Sequence[Number]):
         super().__init__(numbers)
-        self._operation = ' * '
+        self._operation = '*'
 
     def do_algorithm(self) -> Number:
         return reduce(lambda acc, number: acc * number, self._numbers)
 
     @property
     def operation(self) -> str:
-        return ' x '
+        return 'x'
 
 # %% [markdown]
 # ##### Division
@@ -94,7 +94,7 @@ class MultiplicationStrategy(ICalculationStrategy):
 class DivisionStrategy(ICalculationStrategy):
     def __init__(self, numbers: Sequence[Number]):
         super().__init__(numbers)
-        self._operation = ' / '
+        self._operation = '/'
 
     def do_algorithm(self) -> Number:
         return reduce(lambda acc, number: acc / number, self._numbers)

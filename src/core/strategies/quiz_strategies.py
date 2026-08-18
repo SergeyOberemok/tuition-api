@@ -34,6 +34,9 @@ class EqualityStrategy(IQuizStrategy):
     def compare(self, answer) -> bool:
         return self.do_algorithm(answer)
 
+    def __str__(self) -> str:
+        return str(self._question)
+
 # %%
 class FlashCardStrategy(EqualityStrategy, IQuizStrategy):
     def __init__(self, question):
@@ -41,3 +44,6 @@ class FlashCardStrategy(EqualityStrategy, IQuizStrategy):
 
     def do_algorithm(self, answer) -> bool:
         return super().do_algorithm(answer)
+
+    def __str__(self) -> str:
+        return str(self._question)

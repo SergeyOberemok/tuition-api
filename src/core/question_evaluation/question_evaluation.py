@@ -18,10 +18,6 @@ class IQuestionEvaluation(IAssessmentItem):
     def goal(self):
         pass
 
-    @abstractmethod
-    def to_dict(self) -> dict:
-        pass
-
 # %%
 class QuestionEvaluation(IQuestionEvaluation):
     def __init__(self, question, question_type, operation):
@@ -30,6 +26,14 @@ class QuestionEvaluation(IQuestionEvaluation):
         self._operation = operation
         self._answer = None
         self._is_correct = False
+
+    @property
+    def type(self):
+        return self._type
+
+    @property
+    def goal(self):
+        return self._strategy().do_algorithm()
 
     @property
     def is_correct(self) -> bool:
@@ -41,15 +45,12 @@ class QuestionEvaluation(IQuestionEvaluation):
 
         return self._is_correct
 
-    def goal(self):
-        return self._strategy().do_algorithm()
-
     def _strategy(self):
-        return StrategyFactory.create(type('Test', (IQuestionAdapter,), self.to_dict())())
-
-    def to_dict(self) -> dict:
-        return {
+        return StrategyFactory.create(type('Test', (IQuestionAdapter,), {
             'data': self._question,
             'type': self._type,
             'operation': self._operation
-        }
+        })())
+
+    def __str__(self):
+        return str(self._strategy())

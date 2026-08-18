@@ -10,6 +10,8 @@ dependencies = [
     "python-dotenv>=1.2.2",
     "flask-pymongo>=3.0.1",
     "ipykernel>=7.3.0",
+    "gevent>=26.8.0",
+    "gevent-websocket>=0.10.1",
 ]
 
 [dependency-groups]

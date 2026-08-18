@@ -1,6 +1,7 @@
 import pytest
 
 from src.core.question_evaluation.question_evaluation_factory import QuestionEvaluationFactory
+from src.core.question_evaluation.question_type import QuestionType
 
 questions = [
     {
@@ -12,7 +13,7 @@ questions = [
         'operation': 'ordered'
     },
     {
-        'items': ['question', 'answer'],
+        'items': {'question': 1},
         'operation': 'flashcard'
     }
 ]
@@ -24,5 +25,46 @@ def test_question_evaluation_factory(question, operation, answer):
 
     result = question_evaluation.evaluate(answer)
 
-    assert isinstance(question_evaluation.to_dict(), dict)
     assert result == True
+
+
+def test_create_calculation_type_evaluation():
+    question, operation = questions[0].values()
+
+    question_evaluation = QuestionEvaluationFactory.create(question, operation)
+
+    assert question_evaluation.type == QuestionType.CALCULATION
+    assert question_evaluation.evaluate(4) == False
+
+
+def test_create_sequence_type_evaluation():
+    question, operation = questions[1].values()
+
+    question_evaluation = QuestionEvaluationFactory.create(question, operation)
+
+    assert question_evaluation.type == QuestionType.SEQUENCE
+    assert question_evaluation.evaluate(question) == True
+    assert question_evaluation.evaluate(['zxcv', 'qwer', 'asdf']) == False
+
+
+def test_create_quiz_type_evaluation():
+    question, operation = questions[2].values()
+
+    question_evaluation = QuestionEvaluationFactory.create(question, operation)
+
+    assert question_evaluation.type == QuestionType.QUIZ
+    assert question_evaluation.evaluate({'answer': 1}) == True
+    assert question_evaluation.evaluate({'answer': 2}) == False
+
+
+def test_create_quiz_type_evaluation_equality():
+    question_evaluation = QuestionEvaluationFactory.create(1, 'equality')
+
+    assert question_evaluation.type == QuestionType.QUIZ
+    assert question_evaluation.evaluate(1) == True
+    assert question_evaluation.evaluate(2) == False
+
+
+def test_create_raises_for_unsupported_operation():
+    with pytest.raises(ValueError):
+        QuestionEvaluationFactory.create([1, 2], 'unsupported')

@@ -12,3 +12,7 @@ class IStrategy(ABC, Generic[T]):
     @abstractmethod
     def compare(self, answer) -> bool:
         pass
+
+    @abstractmethod
+    def __str__(self) -> str:
+        pass
