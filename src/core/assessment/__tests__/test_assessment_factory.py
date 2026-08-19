@@ -46,6 +46,11 @@ def test_create_with_mixed_question_types():
     assert sequence.evaluate(['a', 'b', 'c']) == True
     assert quiz.evaluate({'answer': 1}) == True
 
+    assert str(calculation) == '2 + 3'
+    assert str(sequence) == 'a -> b -> c'
+    assert str(quiz) == str({'question': 1})
+    assert str(assessment) == '2 + 3; a -> b -> c; ' + str({'question': 1})
+
     assert assessment.result == True
 
 
@@ -66,6 +71,7 @@ def test_create_addition_assessment():
     assert len(items) == len(numbers_pairs)
     assert all(item.type == QuestionType.CALCULATION for item in items)
     assert [item.goal for item in items] == [5, 6, 8]
+    assert str(assessment) == '2 + 3; 5 + 1; 4 + 4'
 
 
 def test_create_addition_assessment_evaluates_answers():

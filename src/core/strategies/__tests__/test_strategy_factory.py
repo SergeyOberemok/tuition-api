@@ -19,6 +19,7 @@ def test_calculation_strategy_factory():
 
     assert isinstance(result, ICalculationStrategy)
     assert isinstance(result, AdditionStrategy)
+    assert str(result) == '1 + 2 + 3'
 
 
 def test_sequence_strategy_factory():
@@ -32,6 +33,7 @@ def test_sequence_strategy_factory():
 
     assert isinstance(result, ISequenceStrategy)
     assert isinstance(result, OrderedStrategy)
+    assert str(result) == '1 -> 2 -> 3'
 
 
 def test_quiz_strategy_factory():
@@ -45,6 +47,7 @@ def test_quiz_strategy_factory():
 
     assert isinstance(result, IQuizStrategy)
     assert isinstance(result, FlashCardStrategy)
+    assert str(result) == str({'question': 1})
 
 
 def test_quiz_strategy_factory_equality():
@@ -58,6 +61,7 @@ def test_quiz_strategy_factory_equality():
 
     assert isinstance(result, IQuizStrategy)
     assert isinstance(result, EqualityStrategy)
+    assert str(result) == '1'
 
 
 def test_strategy_factory_raises_for_unsupported_question_type():

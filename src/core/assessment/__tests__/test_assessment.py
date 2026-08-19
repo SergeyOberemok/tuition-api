@@ -90,3 +90,15 @@ class TestResults:
         assessment = Assessment([])
 
         assert assessment.result == True
+
+
+class TestStr:
+    def test_joins_item_strings_with_semicolon(self):
+        assessment = _addition_assessment([(1, 1), (2, 2), (3, 3)])
+
+        assert str(assessment) == '1 + 1; 2 + 2; 3 + 3'
+
+    def test_empty_for_empty_assessment(self):
+        assessment = Assessment([])
+
+        assert str(assessment) == ''

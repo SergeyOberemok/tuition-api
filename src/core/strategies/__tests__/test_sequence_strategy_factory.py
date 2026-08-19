@@ -8,12 +8,14 @@ def test_create_returns_ordered_strategy():
     result = SequenceStrategyFactory.create('ordered', [1, 2, 3])
 
     assert isinstance(result, OrderedStrategy)
+    assert str(result) == '1 -> 2 -> 3'
 
 
 def test_create_returns_ordered_strategy_for_ordered_type():
     result = SequenceStrategyFactory.create(SequenceType.ORDERED, [1, 2, 3])
 
     assert isinstance(result, OrderedStrategy)
+    assert str(result) == '1 -> 2 -> 3'
 
 
 def test_create_raises_for_unsupported_operation():

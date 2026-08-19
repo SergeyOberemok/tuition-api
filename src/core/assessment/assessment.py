@@ -72,3 +72,6 @@ class Assessment:
     @property
     def result(self) -> bool:
         return all(self.results)
+
+    def __str__(self):
+        return '; '.join([str(q) for q in self._questions])

@@ -9,12 +9,14 @@ def test_create_equality_strategy():
 
     assert isinstance(result, EqualityStrategy)
     assert not isinstance(result, FlashCardStrategy)
+    assert str(result) == '1'
 
 
 def test_create_flashcard_strategy():
     result = QuizStrategyFactory.create(QuizType.FLASHCARD, {'question': 1})
 
     assert isinstance(result, FlashCardStrategy)
+    assert str(result) == str({'question': 1})
 
 
 def test_create_raises_for_unsupported_operation():

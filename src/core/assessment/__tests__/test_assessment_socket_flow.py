@@ -19,6 +19,9 @@ class TestAssessmentSocketHandlerFlow:
             assert item is not None
             session.assessment_item = item
 
+            # handle_question returns {'question': str(item), 'type': item.type}
+            assert str(item) == f'{a} + {b}'
+
             # 'goal': read the target answer for the current question
             assert session.assessment_item.goal == a + b
 
@@ -40,6 +43,11 @@ class TestAssessmentSocketHandlerFlow:
 
         assert session.assessment.result == True
 
+        expected_questions = [f'{a} + {b}' for a, b in numbers_pairs]
+        assert str(session.assessment).split('; ') == expected_questions
+        assert list(zip(session.assessment.results, str(session.assessment).split('; '))) == \
+               list(zip([True, True, True], expected_questions))
+
         # 'disconnect': the session is discarded
         sessions.reset(sid)
         assert sessions.get(sid).assessment is None
@@ -56,11 +64,14 @@ class TestAssessmentSocketHandlerFlow:
 
         item = session.assessment.next()
         session.assessment_item = item
+        assert str(item) == '2 + 3'
         assert session.assessment_item.evaluate(5) == True
 
         item = session.assessment.next()
         session.assessment_item = item
+        assert str(item) == '5 + 1'
         assert session.assessment_item.evaluate(0) == False
 
         assert session.assessment.results == [True, False]
         assert session.assessment.result == False
+        assert str(session.assessment) == '2 + 3; 5 + 1'

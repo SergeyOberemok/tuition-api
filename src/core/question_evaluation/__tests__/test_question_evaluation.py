@@ -69,6 +69,12 @@ def test_evaluate_for_quiz_type():
     assert question_evaluation.is_correct == False
 
 
+def test_str_for_quiz_type():
+    question_evaluation = QuestionEvaluation({'question': 1}, QuestionType.QUIZ, QuizType.FLASHCARD)
+
+    assert str(question_evaluation) == str({'question': 1})
+
+
 def test_evaluate_for_sequence_type():
     question_evaluation = QuestionEvaluation(['a', 'b', 'c'], QuestionType.SEQUENCE, SequenceType.ORDERED)
 
@@ -77,6 +83,12 @@ def test_evaluate_for_sequence_type():
 
     question_evaluation.evaluate(['c', 'b', 'a'])
     assert question_evaluation.is_correct == False
+
+
+def test_str_for_sequence_type():
+    question_evaluation = QuestionEvaluation(['a', 'b', 'c'], QuestionType.SEQUENCE, SequenceType.ORDERED)
+
+    assert str(question_evaluation) == 'a -> b -> c'
 
 
 def test_goal_raises_for_quiz_type():

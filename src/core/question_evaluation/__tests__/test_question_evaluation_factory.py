@@ -35,6 +35,7 @@ def test_create_calculation_type_evaluation():
 
     assert question_evaluation.type == QuestionType.CALCULATION
     assert question_evaluation.evaluate(4) == False
+    assert str(question_evaluation) == '2 + 3'
 
 
 def test_create_sequence_type_evaluation():
@@ -45,6 +46,7 @@ def test_create_sequence_type_evaluation():
     assert question_evaluation.type == QuestionType.SEQUENCE
     assert question_evaluation.evaluate(question) == True
     assert question_evaluation.evaluate(['zxcv', 'qwer', 'asdf']) == False
+    assert str(question_evaluation) == 'asdf -> qwer -> zxcv'
 
 
 def test_create_quiz_type_evaluation():
@@ -55,6 +57,7 @@ def test_create_quiz_type_evaluation():
     assert question_evaluation.type == QuestionType.QUIZ
     assert question_evaluation.evaluate({'answer': 1}) == True
     assert question_evaluation.evaluate({'answer': 2}) == False
+    assert str(question_evaluation) == str({'question': 1})
 
 
 def test_create_quiz_type_evaluation_equality():
@@ -63,6 +66,7 @@ def test_create_quiz_type_evaluation_equality():
     assert question_evaluation.type == QuestionType.QUIZ
     assert question_evaluation.evaluate(1) == True
     assert question_evaluation.evaluate(2) == False
+    assert str(question_evaluation) == '1'
 
 
 def test_create_raises_for_unsupported_operation():

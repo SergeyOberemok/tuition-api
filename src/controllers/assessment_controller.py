@@ -29,7 +29,7 @@ def handle_question(args=None):
     item = session.assessment.prev() if direction == 'prev' else session.assessment.next()
 
     if item is None:
-        emit('end', {'assessment': 'end'})
+        emit('end', list(zip(str(session.assessment).split('; '), session.assessment.results)))
         return ''
 
     session.assessment_item = item
