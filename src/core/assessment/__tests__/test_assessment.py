@@ -7,13 +7,31 @@ def _addition_assessment(numbers_pairs):
 
 
 class TestNext:
-    def test_returns_items_in_order_then_none(self):
+    def test_returns_items_in_order_then_loops_to_first_unanswered(self):
         assessment = _addition_assessment([(1, 1), (2, 2), (3, 3)])
 
         goals = [assessment.next().goal, assessment.next().goal, assessment.next().goal]
 
         assert goals == [2, 4, 6]
+        assert assessment.next().goal == 2
+
+    def test_returns_none_once_all_items_answered(self):
+        assessment = _addition_assessment([(1, 1), (2, 2), (3, 3)])
+        items = [assessment.next() for _ in range(3)]
+
+        for item in items:
+            item.evaluate(item.goal)
+
         assert assessment.next() is None
+
+    def test_loops_to_first_unanswered_skipping_answered_ones(self):
+        assessment = _addition_assessment([(1, 1), (2, 2), (3, 3)])
+        items = [assessment.next() for _ in range(3)]
+
+        items[0].evaluate(items[0].goal)
+        items[2].evaluate(items[2].goal)
+
+        assert assessment.next().goal == 4
 
     def test_on_empty_assessment_returns_none(self):
         assessment = Assessment([])
@@ -53,7 +71,58 @@ class TestNavigation:
         assert assessment.prev().goal == 2
         assert assessment.next().goal == 4
         assert assessment.next().goal == 6
-        assert assessment.next() is None
+        assert assessment.next().goal == 2
+
+
+class TestItems:
+    def test_returns_underlying_questions(self):
+        assessment = _addition_assessment([(1, 1), (2, 2)])
+
+        assert [item.goal for item in assessment.items] == [2, 4]
+
+
+class TestIsComplete:
+    def test_false_while_any_item_unanswered(self):
+        assessment = _addition_assessment([(1, 1), (2, 2)])
+        items = list(assessment)
+
+        items[0].evaluate(2)
+
+        assert assessment.is_complete == False
+
+    def test_true_once_every_item_answered(self):
+        assessment = _addition_assessment([(1, 1), (2, 2)])
+        items = list(assessment)
+
+        items[0].evaluate(2)
+        items[1].evaluate(0)
+
+        assert assessment.is_complete == True
+
+    def test_true_for_empty_assessment(self):
+        assessment = Assessment([])
+
+        assert assessment.is_complete == True
+
+
+class TestGetSummary:
+    def test_returns_id_question_and_result_per_item(self):
+        assessment = _addition_assessment([(1, 1), (2, 2)])
+        items = list(assessment)
+
+        items[0].evaluate(2)
+        items[1].evaluate(0)
+
+        summary = assessment.get_summary()
+
+        assert [entry['question'] for entry in summary] == ['1 + 1', '2 + 2']
+        assert [entry['result'] for entry in summary] == [True, False]
+        assert [entry['id'] for entry in summary] == [item.id for item in items]
+
+    def test_empty_for_empty_assessment(self):
+        assessment = Assessment([])
+
+        assert assessment.get_summary() == []
 
 
 class TestIteration:

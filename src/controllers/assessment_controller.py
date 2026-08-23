@@ -29,12 +29,12 @@ def handle_question(args=None):
     item = session.assessment.prev() if direction == 'prev' else session.assessment.next()
 
     if item is None:
-        emit('end', list(zip(str(session.assessment).split('; '), session.assessment.results)))
+        emit('error', {'message': 'Assessment already completed'})
         return ''
 
     session.assessment_item = item
 
-    return {'question': str(item), 'type': item.type}
+    return {'id': item.id, 'question': str(item), 'type': item.type}
 
 
 @socketio.on('answer')
@@ -46,6 +46,9 @@ def handle_answer(answer: str):
         return ''
 
     result = session.assessment_item.evaluate(answer)
+
+    if session.assessment.is_complete:
+        emit('end', session.assessment.get_summary())
 
     return result
 

@@ -19,6 +19,43 @@ def test_is_correct_defaults_to_false():
     assert question_evaluation.is_correct == False
 
 
+def test_id_defaults_to_a_generated_non_empty_string():
+    question_evaluation = QuestionEvaluation([2, 3], QuestionType.CALCULATION, CalculationType.ADDITION)
+
+    assert isinstance(question_evaluation.id, str)
+    assert len(question_evaluation.id) > 0
+
+
+def test_id_is_unique_per_instance():
+    first = QuestionEvaluation([2, 3], QuestionType.CALCULATION, CalculationType.ADDITION)
+    second = QuestionEvaluation([2, 3], QuestionType.CALCULATION, CalculationType.ADDITION)
+
+    assert first.id != second.id
+
+
+def test_is_answered_defaults_to_false():
+    question_evaluation = QuestionEvaluation([2, 3], QuestionType.CALCULATION, CalculationType.ADDITION)
+
+    assert question_evaluation.is_answered == False
+
+
+def test_evaluate_marks_the_question_as_answered():
+    question_evaluation = QuestionEvaluation([2, 3], QuestionType.CALCULATION, CalculationType.ADDITION)
+
+    question_evaluation.evaluate(4)
+
+    assert question_evaluation.is_answered == True
+
+
+def test_evaluate_keeps_answered_true_on_repeated_calls():
+    question_evaluation = QuestionEvaluation([2, 3], QuestionType.CALCULATION, CalculationType.ADDITION)
+
+    question_evaluation.evaluate(5)
+    question_evaluation.evaluate(4)
+
+    assert question_evaluation.is_answered == True
+
+
 def test_goal_for_calculation_type():
     question_evaluation = QuestionEvaluation([2, 3], QuestionType.CALCULATION, CalculationType.ADDITION)
 

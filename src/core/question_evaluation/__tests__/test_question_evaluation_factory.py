@@ -72,3 +72,12 @@ def test_create_quiz_type_evaluation_equality():
 def test_create_raises_for_unsupported_operation():
     with pytest.raises(ValueError):
         QuestionEvaluationFactory.create([1, 2], 'unsupported')
+
+
+def test_create_generates_a_unique_id():
+    question, operation = questions[0].values()
+
+    question_evaluation = QuestionEvaluationFactory.create(question, operation)
+
+    assert isinstance(question_evaluation.id, str)
+    assert len(question_evaluation.id) > 0

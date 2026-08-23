@@ -12,7 +12,17 @@ from collections.abc import Sequence, Iterable
 class IAssessmentItem(ABC):
     @property
     @abstractmethod
+    def id(self) -> str:
+        pass
+
+    @property
+    @abstractmethod
     def is_correct(self) -> bool:
+        pass
+
+    @property
+    @abstractmethod
+    def is_answered(self) -> bool:
         pass
 
 # %%
@@ -27,12 +37,26 @@ class IAssessment(ABC, Iterable[IAssessmentItem]):
 
     @property
     @abstractmethod
+    def items(self) -> Sequence[IAssessmentItem]:
+        pass
+
+    @property
+    @abstractmethod
     def results(self) -> list[bool]:
         pass
 
     @property
     @abstractmethod
     def result(self) -> bool:
+        pass
+
+    @property
+    @abstractmethod
+    def is_complete(self) -> bool:
+        pass
+
+    @abstractmethod
+    def get_summary(self) -> list[dict]:
         pass
 
 # %%
@@ -46,14 +70,15 @@ class Assessment:
         return self
 
     def __next__(self):
-        item = self.next()
-        if item is None:
+        if self._index + 1 >= len(self._questions):
             raise StopIteration
-        return item
+
+        self._index += 1
+        return self._questions[self._index]
 
     def next(self) -> IAssessmentItem | None:
         if self._index + 1 >= len(self._questions):
-            return None
+            return self._first_unanswered()
 
         self._index += 1
         return self._questions[self._index]
@@ -65,6 +90,18 @@ class Assessment:
         self._index = max(self._index - 1, 0)
         return self._questions[self._index]
 
+    def _first_unanswered(self) -> IAssessmentItem | None:
+        for index, question in enumerate(self._questions):
+            if not question.is_answered:
+                self._index = index
+                return question
+
+        return None
+
+    @property
+    def items(self) -> Sequence[IAssessmentItem]:
+        return self._questions
+
     @property
     def results(self) -> list[bool]:
         return [question.is_correct for question in self._questions]
@@ -72,6 +109,16 @@ class Assessment:
     @property
     def result(self) -> bool:
         return all(self.results)
+
+    @property
+    def is_complete(self) -> bool:
+        return all(question.is_answered for question in self._questions)
+
+    def get_summary(self) -> list[dict]:
+        return [
+            {'id': question.id, 'question': str(question), 'result': question.is_correct}
+            for question in self._questions
+        ]
 
     def __str__(self):
         return '; '.join([str(q) for q in self._questions])
