@@ -2,7 +2,15 @@
 .gitignore
 .idea
 .jupyter
+.venv
+.env
+.env.example
+.pytest_cache
 __pycache__
 __tests__
 anaconda_projects
 *.ipynb
+Dockerfile
+docker-compose.yaml
+requirements.txt
+README.md

@@ -1,16 +1,20 @@
-FROM ubuntu:22.04
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim
 
 WORKDIR /usr/src/app
 
-RUN apt-get update && apt-get install -y python3 python3-pip
+ENV UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    PATH="/usr/src/app/.venv/bin:$PATH"
 
-COPY ./arithmetical-tuition-api/requirements.txt .
-RUN pip install -r requirements.txt
+# Install dependencies first, in their own layer, so source-only changes don't bust the cache
+COPY pyproject.toml uv.lock ./
+RUN uv sync --locked --no-install-project --no-dev
 
-COPY ./arithmetical-tuition-api ./
+# Now add the source and sync the project itself
+COPY app.py ./
+COPY src ./src
+RUN uv sync --locked --no-dev
 
 EXPOSE 5000
 
-ENTRYPOINT ["python3"]
-
-CMD ["assessment_flask_app.py"]
+CMD ["uv", "run", "python", "app.py"]
