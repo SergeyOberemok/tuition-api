@@ -7,12 +7,12 @@ ENV UV_COMPILE_BYTECODE=1 \
     PATH="/usr/src/app/.venv/bin:$PATH"
 
 # Install dependencies first, in their own layer, so source-only changes don't bust the cache
-COPY pyproject.toml uv.lock ./
+COPY interview-tuition-api/pyproject.toml interview-tuition-api/uv.lock ./
 RUN uv sync --locked --no-install-project --no-dev
 
 # Now add the source and sync the project itself
-COPY app.py ./
-COPY src ./src
+COPY interview-tuition-api/app.py ./
+COPY interview-tuition-api/src ./src
 RUN uv sync --locked --no-dev
 
 EXPOSE 5000
